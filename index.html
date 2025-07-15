@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consultas VIP Hacker</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    input, button {
+      background-color: #111;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    .link-button {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      text-align: left;
+      background-color: #111;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      text-decoration: none;
+      font-size: 15px;
+      transition: background-color 0.2s ease;
+    }
+    .link-button:hover {
+      background-color: #003300;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 CONSULTAS VIP HACKER</h1>
+  <input type="text" id="cedula" placeholder="Ingresa número de cédula" oninput="generarEnlaces()">
+  <div id="enlaces"></div>
+
+  <script>
+    const servicios = [
+      { nombre: "Antecedentes Judiciales", url: "https://antecedentes.policia.gov.co:7005/WebJudicial/consultar.do" },
+      { nombre: "Registraduría Nacional", url: "https://www.registraduria.gov.co" },
+      { nombre: "RUAF", url: "https://ruaf.sispro.gov.co" },
+      { nombre: "ADRES", url: "https://www.adres.gov.co/BDUA" },
+      { nombre: "SISBÉN", url: "https://www.sisben.gov.co/Paginas/consulta.aspx" },
+      { nombre: "RUNT", url: "https://www.runt.com.co/consultaCiudadana" },
+      { nombre: "Cédula Digital", url: "https://cd.registraduria.gov.co" },
+      { nombre: "Afiliación a EPS", url: "https://www.miseguridadsocial.gov.co" },
+      { nombre: "Comparendos de tránsito", url: "https://www.fcm.org.co/web/consultas/consultarComparendos" },
+      { nombre: "Antecedentes Disciplinarios", url: "https://www.procuraduria.gov.co/antecedentes" },
+      { nombre: "Procuraduría", url: "https://www.procuraduria.gov.co" },
+      { nombre: "Puesto de votación", url: "https://wsp.registraduria.gov.co/censo/consultar/" },
+      { nombre: "RUES", url: "https://www.rues.org.co" },
+      { nombre: "Libreta Militar", url: "https://www.libretamilitar.mil.co" },
+      { nombre: "RUT", url: "https://muisca.dian.gov.co/WebRutConsulta" },
+      { nombre: "Medidas Correctivas", url: "https://mevalweb.policia.gov.co:7443/PSC/frm_cnp_consulta.aspx" },
+      { nombre: "Procesos Judiciales", url: "https://consultaprocesos.ramajudicial.gov.co" }
+    ];
+
+    function generarEnlaces() {
+      const cedula = document.getElementById("cedula").value.trim();
+      const container = document.getElementById("enlaces");
+      container.innerHTML = "";
+
+      servicios.forEach(servicio => {
+        let enlace = servicio.url;
+
+        // Personalizar si el servicio soporta la cédula por URL
+        if (servicio.nombre === "Puesto de votación") {
+          enlace += "?documento=" + cedula;
+        } else if (servicio.nombre === "RUT") {
+          enlace += "?nit=" + cedula;
+        }
+
+        const a = document.createElement("a");
+        a.href = enlace;
+        a.target = "_blank";
+        a.className = "link-button";
+        a.textContent = "🔗 " + servicio.nombre;
+        container.appendChild(a);
+      });
+    }
+  </script>
+</body>
+</html>
