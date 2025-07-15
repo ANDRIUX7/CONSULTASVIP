@@ -3,93 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Consultas VIP Hacker</title>
+  <title>Consultas VIP 🕵️‍♂️</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" type="image/png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <script src="https://kit.fontawesome.com/a2e0b4b04c.js" crossorigin="anonymous"></script>
   <style>
     body {
-      background-color: #000;
-      color: #00ff00;
-      font-family: 'Courier New', Courier, monospace;
-      padding: 20px;
+      background: #f1f4f6;
+      font-family: 'Segoe UI', sans-serif;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
+    .container {
+      max-width: 700px;
+      margin-top: 40px;
     }
-    input, button {
-      background-color: #111;
-      color: #00ff00;
-      border: 1px solid #00ff00;
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 20px;
-      width: 100%;
+    .card {
+      cursor: pointer;
+      transition: transform 0.2s ease;
     }
-    .link-button {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      text-align: left;
-      background-color: #111;
-      color: #00ff00;
-      border: 1px solid #00ff00;
-      text-decoration: none;
-      font-size: 15px;
-      transition: background-color 0.2s ease;
+    .card:hover {
+      transform: scale(1.02);
     }
-    .link-button:hover {
-      background-color: #003300;
+    .icon {
+      font-size: 1.5rem;
+      margin-right: 15px;
+    }
+    .loading {
+      font-style: italic;
+      color: #555;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>🔍 CONSULTAS VIP HACKER</h1>
-  <input type="text" id="cedula" placeholder="Ingresa número de cédula" oninput="generarEnlaces()">
-  <div id="enlaces"></div>
+  <div class="container text-center">
+    <h2 class="mb-4 text-success">🔍 Consultas VIP 🕵️‍♂️</h2>
+
+    <input type="text" id="cedula" class="form-control mb-3" placeholder="Ingrese el número de cédula" />
+    <div id="tituloCedula" class="h5 mb-2"></div>
+    <div id="buscando" class="loading"></div>
+    <div id="resultados" class="row gy-3 mt-2"></div>
+  </div>
 
   <script>
     const servicios = [
-      { nombre: "Antecedentes Judiciales", url: "https://antecedentes.policia.gov.co:7005/WebJudicial/consultar.do" },
-      { nombre: "Registraduría Nacional", url: "https://www.registraduria.gov.co" },
-      { nombre: "RUAF", url: "https://ruaf.sispro.gov.co" },
-      { nombre: "ADRES", url: "https://www.adres.gov.co/BDUA" },
-      { nombre: "SISBÉN", url: "https://www.sisben.gov.co/Paginas/consulta.aspx" },
-      { nombre: "RUNT", url: "https://www.runt.com.co/consultaCiudadana" },
-      { nombre: "Cédula Digital", url: "https://cd.registraduria.gov.co" },
-      { nombre: "Afiliación a EPS", url: "https://www.miseguridadsocial.gov.co" },
-      { nombre: "Comparendos de tránsito", url: "https://www.fcm.org.co/web/consultas/consultarComparendos" },
-      { nombre: "Antecedentes Disciplinarios", url: "https://www.procuraduria.gov.co/antecedentes" },
-      { nombre: "Procuraduría", url: "https://www.procuraduria.gov.co" },
-      { nombre: "Puesto de votación", url: "https://wsp.registraduria.gov.co/censo/consultar/" },
-      { nombre: "RUES", url: "https://www.rues.org.co" },
-      { nombre: "Libreta Militar", url: "https://www.libretamilitar.mil.co" },
-      { nombre: "RUT", url: "https://muisca.dian.gov.co/WebRutConsulta" },
-      { nombre: "Medidas Correctivas", url: "https://mevalweb.policia.gov.co:7443/PSC/frm_cnp_consulta.aspx" },
-      { nombre: "Procesos Judiciales", url: "https://consultaprocesos.ramajudicial.gov.co" }
+      { nombre: "Adres", url: "https://www.adres.gov.co/BDUA", icono: "fa-solid fa-hospital", favicon: "https://www.adres.gov.co/favicon.ico" },
+      { nombre: "Afiliación a eps", url: "https://www.miseguridadsocial.gov.co", icono: "fa-solid fa-notes-medical", favicon: "https://www.miseguridadsocial.gov.co/favicon.ico" },
+      { nombre: "Antecedentes disciplinarios", url: "https://www.procuraduria.gov.co/antecedentes", icono: "fa-solid fa-scale-balanced", favicon: "https://www.procuraduria.gov.co/favicon.ico" },
+      { nombre: "Antecedentes judiciales", url: "https://antecedentes.policia.gov.co", icono: "fa-solid fa-gavel", favicon: "https://antecedentes.policia.gov.co/favicon.ico" },
+      { nombre: "Cedula digital", url: "https://cd.registraduria.gov.co", icono: "fa-solid fa-fingerprint", favicon: "https://cd.registraduria.gov.co/favicon.ico" },
+      { nombre: "Comparendos de tránsito", url: "https://www.fcm.org.co/web/consultas/consultarComparendos", icono: "fa-solid fa-car", favicon: "https://www.fcm.org.co/favicon.ico" },
+      { nombre: "Consulta información puesto de votación", url: "https://wsp.registraduria.gov.co/censo/consultar/", icono: "fa-solid fa-vote-yea", favicon: "https://www.registraduria.gov.co/favicon.ico" },
+      { nombre: "Libreta militar", url: "https://www.libretamilitar.mil.co", icono: "fa-solid fa-id-badge", favicon: "https://www.libretamilitar.mil.co/favicon.ico" },
+      { nombre: "Medidas correctivas", url: "https://mevalweb.policia.gov.co:7443/PSC/frm_cnp_consulta.aspx", icono: "fa-solid fa-shield-halved", favicon: "https://www.policia.gov.co/favicon.ico" },
+      { nombre: "Procesos judiciales", url: "https://consultaprocesos.ramajudicial.gov.co", icono: "fa-solid fa-scale-unbalanced", favicon: "https://consultaprocesos.ramajudicial.gov.co/favicon.ico" },
+      { nombre: "Procuraduría", url: "https://www.procuraduria.gov.co", icono: "fa-solid fa-briefcase", favicon: "https://www.procuraduria.gov.co/favicon.ico" },
+      { nombre: "Registraduría nacional", url: "https://www.registraduria.gov.co", icono: "fa-solid fa-id-card", favicon: "https://www.registraduria.gov.co/favicon.ico" },
+      { nombre: "Ruaf", url: "https://ruaf.sispro.gov.co", icono: "fa-solid fa-database", favicon: "https://ruaf.sispro.gov.co/favicon.ico" },
+      { nombre: "Rues", url: "https://www.rues.org.co", icono: "fa-solid fa-building", favicon: "https://www.rues.org.co/favicon.ico" },
+      { nombre: "Runt", url: "https://www.runt.com.co/consultaCiudadana", icono: "fa-solid fa-motorcycle", favicon: "https://www.runt.com.co/favicon.ico" },
+      { nombre: "Rut", url: "https://muisca.dian.gov.co/WebRutConsulta", icono: "fa-solid fa-file-invoice", favicon: "https://muisca.dian.gov.co/favicon.ico" },
+      { nombre: "Sisben", url: "https://www.sisben.gov.co/Paginas/consulta.aspx", icono: "fa-solid fa-users", favicon: "https://www.sisben.gov.co/favicon.ico" }
     ];
 
-    function generarEnlaces() {
-      const cedula = document.getElementById("cedula").value.trim();
-      const container = document.getElementById("enlaces");
-      container.innerHTML = "";
+    servicios.sort((a, b) => a.nombre.localeCompare(b.nombre)); // orden alfabético
 
-      servicios.forEach(servicio => {
-        let enlace = servicio.url;
+    const inputCedula = document.getElementById("cedula");
+    const divResultados = document.getElementById("resultados");
+    const divTitulo = document.getElementById("tituloCedula");
+    const divBuscando = document.getElementById("buscando");
 
-        // Personalizar si el servicio soporta la cédula por URL
-        if (servicio.nombre === "Puesto de votación") {
-          enlace += "?documento=" + cedula;
-        } else if (servicio.nombre === "RUT") {
-          enlace += "?nit=" + cedula;
-        }
+    inputCedula.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        const cedula = inputCedula.value.trim();
+        if (cedula === "") return;
 
-        const a = document.createElement("a");
-        a.href = enlace;
-        a.target = "_blank";
-        a.className = "link-button";
-        a.textContent = "🔗 " + servicio.nombre;
-        container.appendChild(a);
-      });
-    }
+        divTitulo.textContent = `Cédula consultada: ${cedula}`;
+        divBuscando.textContent = "🔎 Buscando...";
+        inputCedula.value = "";
+
+        setTimeout(() => {
+          divResultados.innerHTML = "";
+          divBuscando.textContent = "";
+
+          servicios.forEach(servicio => {
+            const card = document.createElement("div");
+            card.className = "col-12";
+            card.innerHTML = `
+              <div class="card p-3" onclick="window.open('${servicio.url}', '_blank')">
+                <div class="d-flex align-items-center">
+                  <img src="${servicio.favicon}" alt="icono" width="24" height="24" class="me-3" onerror="this.style.display='none'">
+                  <i class="${servicio.icono} me-3 text-success"></i>
+                  <div>
+                    <h6 class="mb-0 text-capitalize">${servicio.nombre}</h6>
+                    <small class="text-muted">${servicio.url}</small>
+                  </div>
+                </div>
+              </div>
+            `;
+            divResultados.appendChild(card);
+          });
+        }, 1000);
+      }
+    });
   </script>
 </body>
 </html>
